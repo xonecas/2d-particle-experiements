@@ -1,0 +1,28 @@
+
+/* Local styles
+   (not much needed)
+*/
+html {
+   background: #0f0f0f;
+}
+
+body {
+   background: transparent;
+}
+
+.actions {
+   background: transparent;
+   border: none;
+   box-shadow: none;
+}
+
+canvas {
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: -1;
+}
+
+h1, h2, label {
+   color: #f2f2f2;
+}
