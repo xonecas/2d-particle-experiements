@@ -72,7 +72,7 @@
          particles.push(particle);
          particle.draw();
 
-         c.restore();         
+         c.restore();
       }
 
       c.restore();
@@ -81,9 +81,9 @@
    /* recursion play */
    function fractal () {
       var gens       = 0,
-         max         = 5,
-         size        = 10,
-         startColor  = rrange(1, 360);
+         max         = 10,
+         size        = 2,
+         startColor  = rrange(260, 360);
 
       canvas.width = canvas.width;
       canvas.height = canvas.height;
@@ -114,12 +114,16 @@
             new Particle(0, 0, size, color).draw();
 
             color = color >= 360 ? 1 : color + 20 * gens;
+
             _init(rrange(1, 270), color, rrange(200, 300), 
                rrange(0.75, 1, true));
+
             _init(rrange(1, 270), color, rrange(200, 300), 
                rrange(0.75, 1, true));
+
             _init(rrange(1, 270), color, rrange(200, 300), 
                rrange(0.75, 1, true));
+
             _init(rrange(1, 270), color, rrange(200, 300), 
                rrange(0.75, 1, true));
          }
@@ -178,7 +182,7 @@
    }
 
    //spiral();
-   //fractal();
+   fractal();
    //rain();
 
    redrawRain.addEventListener('click', function (ev) {
