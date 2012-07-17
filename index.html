@@ -11,76 +11,23 @@
    <link rel="stylesheet" href="css/style.css"> 
 
 </head>
-<body class="container">
-   <div class="row">
-      <h1 class="span16 columns">Particle playground <small>experiments with 2d particles</small></h1>
-   </div>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="//github.com/xonecas/2d-particle-experiements">
+                    Particle Playground
+                </a>
 
-   <h2>Particle Rain</h2>
-   <form id="rain" class="row form">
-      <fieldset>
-         <div class="clearfix">
-            <label>Color range</label> 
-            <div class="input">
-               <div class="inline-inputs"> 
-                  <input id="startColor" class="mini" size=3 type="text" value=180>
-                   to  
-                  <input id="endColor" class="mini" size=3 type="text" value=200>
-                  <em>min 1, max 360</em>
-               </div>
-            </div>
-         </div>
-         <div class="clearfix">
-            <label>Leap range</label> 
-            <div class="input">
-               <div class="inline-inputs">
-                  <input id="startLeap" class="mini" size=3 type="text" value="0.5">
-                   to 
-                  <input id="endLeap" class="mini" size=3 type="text" value="3">
-                  <em>min 0.1, max 5</em>
-               </div>
-            </div>
-         </div>
-         <div class="clearfix">
-            <label>Drops</label> 
-            <div class="input">
-               <input id="dropCount" class="mini" size=3 type="text" value=500> <em>Max 500</em>
-            </div>
-         </div>
-      </fieldset>
-      <div class="actions">
-         <input id="redraw" type="submit" class="btn primary" value="Draw">
-         <input type="reset" class="btn" value="Reset">
-      </div>
-   </form>
+                <a href="/">
+                    <small class="navbar-text">(click to reset)</small>
+                </a>
 
-   <h2>Color spiral</h2>
-   <form id="spiral" class="row form">
-      <fieldset>
-         <div class="clearfix">
-            <label>Position Modifier</label> 
-            <div class="input">
-               <input id="spiralPositionMod" class="mini" size=3 type="text" value="0.05">
+                <p class="navbar-text pull-right">
+                    Open your console for instructions
+                </p>
             </div>
-         </div>
-         <div class="clearfix">
-            <label>Size</label> 
-            <div class="input">
-               <input id="spiralSize" class="mini" size=3 type="text" value=1>
-            </div>
-         </div>
-         <div class="clearfix">
-            <label>Particle</label> 
-            <div class="input">
-               <input id="spiralCount" class="mini" size=5 type="text" value=12000>
-            </div>
-         </div>
-      </fieldset>
-      <div class="actions">
-         <input id="redrawSpiral" type="submit" class="btn primary" value="Draw">
-         <input type="reset" class="btn" value="Reset">
-      </div>
-   </form>
+        </div>
+    </div>
 
    <script src="js/script.js"></script>
 </body>

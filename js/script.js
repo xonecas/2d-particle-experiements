@@ -5,9 +5,7 @@
     var body       = doc.querySelector('body'),
         canvas      = doc.createElement('canvas'),
         c           = canvas.getContext('2d'),
-        radians     = Math.PI / 180,
-        redrawRain = doc.querySelector('#redraw'),
-        redrawSpiral = doc.querySelector('#redrawSpiral');
+        radians     = Math.PI / 180;
 
     body.appendChild(canvas);
     canvas.width = win.innerWidth - 10;
@@ -41,12 +39,12 @@
     function spiral() {
         var particle,
             particles = [],
-            maxParticles = parseInt(doc.querySelector('#spiralCount').value, 10) || 6000,
+            maxParticles = 6000,
             angle = 0,
-            size = parseInt(doc.querySelector('#spiralSize').value, 10) || 5,
+            size = 5,
             x = 0,
             y = 0,
-            xyModifier = parseFloat(doc.querySelector('#spiralPositionMod').value, 10) || 1.1,
+            xyModifier = 1.1,
             color = 180;
 
         canvas.width = canvas.width;
@@ -74,6 +72,8 @@
         }
 
         c.restore();
+
+        return "Look at the pretty dots!";
     }
 
     /* recursion play */
@@ -104,7 +104,6 @@
             c.stroke();
 
             c.translate(distance, 0);
-            console.log(scale);
             c.scale(scale, scale);
 
             if (gens < max) {
@@ -127,16 +126,18 @@
         }(0, startColor, 0, 1));
 
         c.restore();
+
+        return "Wicked man...";
     }
 
     function rain() {
         var dash,
             dashes = [],
-            max = parseInt(doc.querySelector('#dropCount').value, 10),
-            startColor = parseInt(doc.querySelector('#startColor').value, 10) || 180,
-            endColor = parseInt(doc.querySelector('#endColor').value, 10) || 200,
-            startLeap = parseInt(doc.querySelector('#startLeap').value, 10) || 0.5,
-            endLeap = parseInt(doc.querySelector('#endLeap').value, 10) || 3;
+            max = 4000,
+            startColor = 180,
+            endColor = 200,
+            startLeap = 0.5,
+            endLeap = 3;
 
         canvas.width = canvas.width;
         canvas.height = canvas.height;
@@ -171,42 +172,38 @@
                 dash.draw();
             }
         }, 1000 / 30);
+
+        return "It's raining...";
     }
 
-    //spiral();
-    //fractal();
-    //rain();
+    function stop() {
+        if (win.interval) {
+            clearInterval(win.interval);
+        }
 
-    window.spiral = spiral;
-    window.fractal = fractal;
-    window.rain = rain;
+        return "Stopped";
+    }
 
-    window.help = function () {
+    win.spiral = spiral;
+    win.fractal = fractal;
+    win.rain = rain;
+    win.stop = stop;
+
+    win.help = function () {
         console.log([
             'Welcome to particle playground!',
+            '',
+            '(Warning: you might lock up your browser)',
+            '',
             'There are 3 functions for you to use:',
             '   spiral();',
             '   fractal();',
-            '   rain();',
+            '   rain(); and stop(); (stop calls off the rain)',
             'No arguments (comming soon)',
             '',
             'You can see this prompt by calling help();'
         ].join('\n'));
     };
-    window.help();
-
-    redrawRain.addEventListener('click', function (ev) {
-        ev.preventDefault();
-        rain();
-    }, false);
-
-    redrawSpiral.addEventListener('click', function (ev) {
-        ev.preventDefault();
-        if (win.interval) {
-            clearInterval(win.interval);
-        }
-        spiral();
-    }, false);
-
+    win.help();
 
 }(window, document));
