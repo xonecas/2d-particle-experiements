@@ -1,0 +1,19 @@
+
+/* Local styles
+   (not much needed)
+*/
+html {
+   background: #0f0f0f;
+}
+
+body {
+   background: transparent;
+   padding-top: 40px;
+}
+
+canvas {
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: -1;
+}
