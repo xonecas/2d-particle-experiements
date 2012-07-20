@@ -1,11 +1,12 @@
 /*jslint browser:true, nomen:true, devel:true */
+/*global $:false */
 (function (win, doc) {
     'use strict';
 
-    var body       = doc.querySelector('body'),
-        canvas      = doc.createElement('canvas'),
-        c           = canvas.getContext('2d'),
-        radians     = Math.PI / 180;
+    var body = doc.querySelector('body'),
+        canvas = doc.createElement('canvas'),
+        c = canvas.getContext('2d'),
+        radians = Math.PI / 180;
 
     body.appendChild(canvas);
     canvas.width = win.innerWidth - 10;
@@ -18,9 +19,9 @@
     }
 
     function Particle(x, y, size, color) {
-        this.x        = x;
-        this.y        = y;
-        this.size    = size;
+        this.x = x;
+        this.y = y;
+        this.size = size;
         this.color  = color || rrange(1, 359);
     }
 
@@ -176,6 +177,62 @@
         return "It's raining...";
     }
 
+    function circle(x, y, soft) {
+        var particle,
+            max = 12,
+            angleMod = 360 / max,
+            radius = 90;
+
+        x = x || canvas.width / 2;
+        y = y || canvas.height / 2;
+
+
+        if (soft) {
+            c.save();
+            c.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            c.fillRect(0, 0, canvas.width, canvas.height);
+            c.restore();
+        } else {
+            canvas.width = canvas.width;
+            canvas.height = canvas.height;
+        }
+
+        c.save();
+        c.translate(x, y);
+
+        while (max) {
+
+            particle = new Particle(radius, radius, 8, angleMod * max);
+            particle.draw();
+
+            c.rotate(angleMod * radians);
+
+            max -= 1;
+        }
+
+        c.restore();
+
+        return "It's magic";
+    }
+
+    function trackingCircle() {
+        var x = 0,
+            y = 0,
+            angle = 1;
+
+        canvas.addEventListener('mousemove', function (e) {
+            x = e.clientX;
+            y = e.clientY;
+        }, false);
+
+        win.interval = setInterval(function () {
+            circle(x, y, true);
+        }, 1000 / 60);
+
+        return "tracking...";
+
+    }
+
     function stop() {
         if (win.interval) {
             clearInterval(win.interval);
@@ -188,6 +245,8 @@
     win.fractal = fractal;
     win.rain = rain;
     win.stop = stop;
+    win.circle = circle;
+    win.tracking = trackingCircle;
 
     win.help = function () {
         console.log([
@@ -199,11 +258,18 @@
             '   spiral();',
             '   fractal();',
             '   rain(); and stop(); (stop calls off the rain)',
+            '   circle();',
+            '   tracking();',
             'No arguments (comming soon)',
             '',
             'You can see this prompt by calling help();'
         ].join('\n'));
     };
     win.help();
+
+    $('.fn').click(function (e) {
+        var fn = $(e.target).data('fn');
+        win[fn]();
+    });
 
 }(window, document));
