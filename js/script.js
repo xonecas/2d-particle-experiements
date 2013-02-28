@@ -1,4 +1,4 @@
-/*jslint browser:true, nomen:true, devel:true */
+/*jslint browser:true, plusplus:true, devel:true */
 /*global $:false */
 (function (win, doc) {
     'use strict';
@@ -9,13 +9,26 @@
         radians = Math.PI / 180;
 
     body.appendChild(canvas);
-    canvas.width = win.innerWidth - 10;
-    canvas.height = win.innerHeight - 10;
+    canvas.width = win.innerWidth - 20;
+    canvas.height = win.innerHeight - 20 - 40;
 
     /* tool */
     function rrange(min, max, noFloor) {
         var result = Math.random() * (max - min) + min;
         return noFloor ? result : Math.floor(result);
+    }
+
+    function stop() {
+        if (win.interval) {
+            clearInterval(win.interval);
+        }
+
+        return "Stopped";
+    }
+
+    function clean() {
+        canvas.width = canvas.width;
+        canvas.height = canvas.height;
     }
 
     function Particle(x, y, size, color) {
@@ -36,7 +49,68 @@
         }
     };
 
-    /* first routine */
+    function tiles() {
+        var w = canvas.width,
+            h = canvas.height,
+            r = 20,
+            rows = Math.floor(w / r),
+            cols = Math.floor(h / r),
+            color = 0,
+            n,
+            m;
+
+        for (n = 0; n < cols; ++n) {
+            for (m = 0; m < rows; ++m) {
+
+                c.strokeStyle = "hsl(" +
+                    (color === 360 ? color = 0 : color += 0.2) +
+                    ", 100%, 50%)";
+
+                c.beginPath();
+
+                c.arc(r + n * (r * 2),
+                        r + m * (r * 2),
+                        Math.floor(r / 4) * 3,
+                        0,
+                        Math.PI * 2, true);
+                c.stroke();
+
+            }
+        }
+
+    }
+
+    function grid() {
+        var w = canvas.width,
+            h = canvas.height,
+            mod = 100,
+            size = Math.floor(w / mod),
+            i;
+
+        canvas.width = size * mod + 2;
+        canvas.style.width = size * mod + 2;
+
+        c.save();
+        c.moveTo(0, 0);
+        i = mod;
+        while (i) {
+            c.moveTo(size * i, 0);
+            c.lineTo(size * i, h);
+            --i;
+        }
+
+        c.moveTo(0, 0);
+        i = Math.floor(h / size);
+        while (i) {
+            c.moveTo(0, size * i);
+            c.lineTo(w, size * i);
+            --i;
+        }
+
+        c.stroke();
+        c.restore();
+    }
+
     function spiral() {
         var particle,
             particles = [],
@@ -48,8 +122,7 @@
             xyModifier = 1.1,
             color = 180;
 
-        canvas.width = canvas.width;
-        canvas.height = canvas.height;
+        clean();
 
         c.save();
         c.translate(canvas.width / 2, canvas.height / 2);
@@ -84,14 +157,13 @@
             size = 4,
             startColor = rrange(260, 360);
 
-        canvas.width = canvas.width;
-        canvas.height = canvas.height;
+        clean();
 
         c.save();
         c.translate(canvas.width / 2, canvas.height / 2);
         new Particle(0, 0, size, startColor).draw();
 
-        (function _init(angle, color, distance, scale) {
+        (function init(angle, color, distance, scale) {
             gens++;
             angle = angle || rrange(1, 90);
 
@@ -112,10 +184,10 @@
 
                 color = color >= 360 ? 1 : color + 20 * gens;
 
-                _init(rrange(1, 270), color, rrange(200, 300),
+                init(rrange(1, 270), color, rrange(200, 300),
                     rrange(0.75, 1, true));
 
-                _init(rrange(1, 270), color, rrange(200, 300),
+                init(rrange(1, 270), color, rrange(200, 300),
                     rrange(0.75, 1, true));
             }
 
@@ -140,8 +212,7 @@
             startLeap = 0.5,
             endLeap = 3;
 
-        canvas.width = canvas.width;
-        canvas.height = canvas.height;
+        clean();
 
         if (win.interval) {
             clearInterval(win.interval);
@@ -193,8 +264,7 @@
             c.fillRect(0, 0, canvas.width, canvas.height);
             c.restore();
         } else {
-            canvas.width = canvas.width;
-            canvas.height = canvas.height;
+            clean();
         }
 
         c.save();
@@ -233,18 +303,11 @@
 
     }
 
-    function stop() {
-        if (win.interval) {
-            clearInterval(win.interval);
-        }
-
-        return "Stopped";
-    }
-
     win.spiral = spiral;
     win.fractal = fractal;
     win.rain = rain;
     win.stop = stop;
+    win.clean = clean;
     win.circle = circle;
     win.tracking = trackingCircle;
 
@@ -265,11 +328,16 @@
             'You can see this prompt by calling help();'
         ].join('\n'));
     };
-    win.help();
 
     $('.fn').click(function (e) {
         var fn = $(e.target).data('fn');
         win[fn]();
+    });
+
+    $(function () {
+        win.help();
+        //grid();
+        tiles();
     });
 
 }(window, document));

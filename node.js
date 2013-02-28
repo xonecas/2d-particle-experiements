@@ -19,8 +19,6 @@
     _http.createServer(function (req, res) {
         var url, pathname;
 
-        console.log('Incoming request.', req.method);
-
         /* I only want GET requests */
         if (req.method === 'GET') {
             url = _url.parse(req.url, true);
@@ -48,7 +46,7 @@
                         console.log('Error: 500, Cannot read file', pathname);
                         res.writeHead(500);
                         res.end("Could not resolve path request");
-                        throw err;
+                        console.log(err, err.stack);
                     }
 
                     res.writeHead(200, {
@@ -57,7 +55,7 @@
                         "cache-control": "public, max-age=" + CACHE
                     });
                     res.end(out);
-                    console.log('Success: 200');
+                    console.log('Success: 200', url.pathname);
                 });
             });
         } else {
